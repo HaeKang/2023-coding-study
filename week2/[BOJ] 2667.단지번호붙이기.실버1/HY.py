@@ -1,42 +1,36 @@
-def change(x):
-    switch[x] = abs(switch[x] - 1)
-
-
-def man(x):
-    for i in range(x, n + 1, x):
-        change(i)
-
-
-def woman(x):
-    change(x)
-    for i in range(1, n + 1):
-        if x - i <= 0 or x + i >= n + 1:
-            break
-
-        if switch[x - i] == switch[x + i]:
-            change(x - i)
-            change(x + i)
-        else:
-            break
-
-
 n = int(input())
-switch = [0] + list(map(int, input().split()))
-num = int(input())
-s = []
-for _ in range(num):
-    s.append(list(map(int, input().split())))
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+    
+visited = [[False] * n for _ in range(n)]
 
-for i in range(num):
-    if s[i][0] == 1:
-        man(s[i][1])
-    else:
-        woman(s[i][1])
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
 
-tmp = 0
-for i in switch[1:]:
-    print(i, end=' ')
-    tmp += 1
-    if tmp == 20:
-        print()
-        tmp = 0
+def dfs(x, y):
+    global cnt
+    cnt += 1
+    visited[x][y] = True    #방문처리
+    graph[x][y] = 0
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if 0 <= nx < n and 0 <= ny < n:  #범위 안에 있고
+            if not visited[nx][ny] and graph[nx][ny] == 1: #1이면서 방문하지 않았으면 dfs
+                dfs(nx, ny)
+        
+cnt = 0
+result = []
+
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == 1 and not visited[i][j]:
+            dfs(i, j)
+            result.append(cnt)
+            cnt = 0
+            
+result.sort()
+print(len(result))
+for i in range(len(result)):
+    print(result[i])
