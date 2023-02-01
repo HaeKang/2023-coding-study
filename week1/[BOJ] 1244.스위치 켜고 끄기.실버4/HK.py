@@ -36,12 +36,12 @@ def women_case(num, arr, switch):
 
 
 switch = int(input())
-arr = list(input().split(" "))
+arr = list(input().split())
 
 t = int(input())
 
 for _ in range(t):
-    sex, num = map(int, input().split(" "))
+    sex, num = map(int, input().split())
     if sex == 1:
         arr = man_case(num - 1, arr, switch)
     else:
